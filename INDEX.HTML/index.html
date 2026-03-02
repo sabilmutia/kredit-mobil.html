@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>BMW Indonesia</title>
+
+  <!-- Bootstrap 5 & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+
+    /* ── NAVBAR ── */
+    .navbar { background: #0d1b2a; }
+    .nav-link { color: #ccc !important; }
+    .nav-link:hover { color: #fff !important; }
+    .brand { color: #fff; font-weight: 800; letter-spacing: 3px; font-size: 1.2rem; }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+                  url('https://images.unsplash.com/photo-1555215695-3004980ad54e?w=1400') center/cover;
+      height: 420px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #fff;
+    }
+    .hero h1 { font-size: 2.5rem; font-weight: 800; }
+    .hero p  { font-size: 1rem; color: #ccc; }
+
+    /* ── SECTION TITLE ── */
+    .sec-title { text-align: center; margin-bottom: 2rem; }
+    .sec-title h2 { font-weight: 800; font-size: 1.8rem; color: #0d1b2a; }
+    .sec-title .line {
+      width: 50px; height: 4px;
+      background: #1c69d4;
+      border-radius: 2px;
+      margin: 0.4rem auto 0;
+    }
+
+    /* ── CARD MOBIL ── */
+    .car-card {
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      transition: transform .3s;
+    }
+    .car-card:hover { transform: translateY(-5px); }
+    .car-card img {
+      width: 100%; height: 200px;
+      object-fit: cover;
+    }
+    .car-card .body { padding: 1.2rem; }
+    .car-card .brand-tag {
+      font-size: .7rem; font-weight: 700;
+      color: #1c69d4; letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+    .car-card h5 { font-weight: 800; margin: .2rem 0; }
+    .car-card .price { color: #1c69d4; font-weight: 700; }
+    .btn-kredit {
+      display: block; width: 100%; margin-top: .75rem;
+      background: #1c69d4; color: #fff;
+      border: none; border-radius: 8px;
+      padding: .5rem; font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-kredit:hover { background: #1558b0; }
+
+    /* ── KREDIT SECTION ── */
+    .kredit-section {
+      background: linear-gradient(135deg, #0d1b2a, #1c3a5e);
+      color: #fff; padding: 4rem 0;
+    }
+    .kredit-section .sec-title h2 { color: #fff; }
+    .kredit-section .sec-title .line { background: #4d9fff; }
+    .kredit-card {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 16px;
+      padding: 2rem;
+    }
+    .kredit-card label { font-size: .85rem; font-weight: 600; color: #aac; }
+    .kredit-card .form-control {
+      background: rgba(255,255,255,0.08) !important;
+      border: 1px solid rgba(255,255,255,0.2) !important;
+      color: #fff !important; border-radius: 10px;
+    }
+    .kredit-card .form-control::placeholder { color: rgba(255,255,255,.35) !important; }
+    .input-group-text {
+      background: rgba(28,105,212,.3) !important;
+      border: 1px solid rgba(255,255,255,.2) !important;
+      color: #7db8f0 !important;
+    }
+    .btn-hitung {
+      background: #1c69d4; color: #fff;
+      border: none; border-radius: 10px;
+      padding: .75rem; font-weight: 700;
+      width: 100%; font-size: 1rem;
+    }
+    .btn-hitung:hover { background: #1558b0; }
+    .btn-reset {
+      background: transparent; color: #aaa;
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 10px; padding: .75rem;
+      font-weight: 600; width: 100%;
+    }
+
+    /* Hasil */
+    .hasil-box {
+      display: none; margin-top: 1.5rem;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(28,105,212,.4);
+      border-radius: 14px; padding: 1.5rem;
+      animation: fadeUp .4s ease;
+    }
+    .hasil-box.show { display: block; }
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(20px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    .hasil-row {
+      display: flex; justify-content: space-between;
+      padding: .5rem 0;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+      font-size: .88rem;
+    }
+    .hasil-row:last-child { border: none; }
+    .hasil-row .lbl { color: #9ca3af; }
+    .hasil-row .val { font-weight: 600; }
+    .angsuran-box {
+      background: #1c69d4; border-radius: 12px;
+      padding: 1.2rem; text-align: center; margin-top: 1rem;
+    }
+    .angsuran-box .kecil { font-size: .72rem; color: rgba(255,255,255,.7); letter-spacing: 1.5px; }
+    .angsuran-box .besar { font-size: 1.8rem; font-weight: 800; }
+
+    /* Error */
+    .error-msg {
+      display: none; margin-top: 1rem;
+      background: rgba(239,68,68,.1);
+      border: 1px solid rgba(239,68,68,.3);
+      border-radius: 8px; color: #fca5a5;
+      padding: .7rem 1rem; font-size: .85rem;
+    }
+    .error-msg.show { display: block; }
+
+    /* ── TENTANG ── */
+    .tentang-section { background: #f5f7fa; padding: 4rem 0; }
+    .tentang-section img {
+      border-radius: 14px;
+      box-shadow: 0 8px 30px rgba(0,0,0,.12);
+    }
+    .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.5rem; }
+    .stat-box {
+      background: #fff; border-radius: 12px;
+      padding: .9rem; text-align: center;
+      box-shadow: 0 2px 12px rgba(0,0,0,.06);
+    }
+    .stat-box .num { font-size: 1.4rem; font-weight: 800; color: #1c69d4; }
+    .stat-box .lbl { font-size: .72rem; color: #6b7280; }
+
+    /* ── KONTAK ── */
+    .kontak-section { background: #0d1b2a; color: #fff; padding: 4rem 0; }
+    .kontak-section .sec-title h2 { color: #fff; }
+    .kontak-section .sec-title .line { background: #4d9fff; }
+    .kontak-card {
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 14px; padding: 1.5rem;
+      text-align: center;
+    }
+    .kontak-icon {
+      width: 55px; height: 55px;
+      background: rgba(28,105,212,.15);
+      border-radius: 50%;
+      display: flex; align-items: center;
+      justify-content: center;
+      margin: 0 auto .8rem;
+      font-size: 1.3rem; color: #1c69d4;
+    }
+    .kontak-card h5 { font-weight: 700; margin-bottom: .4rem; }
+    .kontak-card p  { color: #9ca3af; font-size: .85rem; margin: 0; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #050d14; color: #6b7280;
+      text-align: center; padding: 1.5rem;
+      font-size: .82rem;
+    }
+    footer .fw-bold { color: #fff; letter-spacing: 2px; }
+  </style>
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar navbar-expand-lg sticky-top shadow">
+  <div class="container">
+    <a class="navbar-brand brand" href="#beranda">⚙ BMW <small class="text-secondary fw-normal" style="font-size:.65rem; letter-spacing:2px;">INDONESIA</small></a>
+    <button class="navbar-toggler border-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+      <span class="navbar-toggler-icon" style="filter:invert(1)"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="nav">
+      <ul class="navbar-nav ms-auto gap-1">
+        <li><a class="nav-link" href="#beranda">Beranda</a></li>
+        <li><a class="nav-link" href="#kredit">Simulasi Kredit</a></li>
+        <li><a class="nav-link" href="#tentang">Tentang</a></li>
+        <li><a class="nav-link" href="#kontak">Kontak</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section id="beranda">
+  <div class="hero">
+    <div>
+      <h1>The Ultimate Driving Machine</h1>
+      <p>Rasakan kemewahan dan performa terbaik bersama BMW Indonesia</p>
+      <a href="#kredit" class="btn btn-primary rounded-pill px-4 mt-2">Simulasi Kredit →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== KOLEKSI MOBIL ===== -->
+<section id="mobil" style="padding: 4rem 0;">
+  <div class="container">
+    <div class="sec-title">
+      <h2>Koleksi Mobil BMW</h2>
+      <div class="line"></div>
+      <p class="text-muted mt-2" style="font-size:.88rem;">Pilihan terbaik untuk gaya hidup Anda</p>
+    </div>
+
+    <div class="row g-4 justify-content-center">
+
+      <!-- Mobil 1 -->
+      <div class="col-12 col-md-4">
+        <div class="car-card">
+          <img src="https://images.unsplash.com/photo-1523983388277-336a66bf9bcd?w=600" alt="BMW 3 Series">
+          <div class="body">
+            <div class="brand-tag">3 Series</div>
+            <h5>BMW 330i</h5>
+            <p class="text-muted" style="font-size:.82rem;">Sedan sport TwinPower Turbo 2.0L, 258 HP</p>
+            <div class="price">Rp 749.000.000 <small class="text-muted fw-normal">OTR Jakarta</small></div>
+            <button class="btn-kredit" onclick="isiHarga(749000000)">
+              <i class="bi bi-calculator me-1"></i>Hitung Kredit
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobil 2 -->
+      <div class="col-12 col-md-4">
+        <div class="car-card">
+          <img src="https://images.unsplash.com/photo-1617788138017-80ad40651399?w=600" alt="BMW X5">
+          <div class="body">
+            <div class="brand-tag">X Series</div>
+            <h5>BMW X5 xDrive</h5>
+            <p class="text-muted" style="font-size:.82rem;">SUV premium AWD dengan teknologi terdepan</p>
+            <div class="price">Rp 1.675.000.000 <small class="text-muted fw-normal">OTR Jakarta</small></div>
+            <button class="btn-kredit" onclick="isiHarga(1675000000)">
+              <i class="bi bi-calculator me-1"></i>Hitung Kredit
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobil 3 -->
+      <div class="col-12 col-md-4">
+        <div class="car-card">
+          <img src="https://images.unsplash.com/photo-1502877338535-766e1452684a?w=600" alt="BMW iX">
+          <div class="body">
+            <div class="brand-tag">Electric</div>
+            <h5>BMW iX xDrive50</h5>
+            <p class="text-muted" style="font-size:.82rem;">Full electric SUV, jangkauan 630 km (WLTP)</p>
+            <div class="price">Rp 3.299.000.000 <small class="text-muted fw-normal">OTR Jakarta</small></div>
+            <button class="btn-kredit" onclick="isiHarga(3299000000)">
+              <i class="bi bi-calculator me-1"></i>Hitung Kredit
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== SIMULASI KREDIT ===== -->
+<section id="kredit" class="kredit-section">
+  <div class="container">
+    <div class="sec-title">
+      <h2>Simulasi Kredit</h2>
+      <div class="line"></div>
+      <p style="color:#8fa9c8; font-size:.88rem; margin-top:.5rem;">Hitung estimasi cicilan bulanan BMW impian Anda</p>
+    </div>
+
+    <div class="row g-4 justify-content-center">
+
+      <!-- Form Kalkulator -->
+      <div class="col-12 col-lg-6">
+        <div class="kredit-card">
+          <h6 class="text-white mb-4"><i class="bi bi-calculator me-2 text-primary"></i>Kalkulator Kredit</h6>
+
+          <div class="mb-3">
+            <label>Harga Mobil</label>
+            <div class="input-group mt-1">
+              <span class="input-group-text">Rp</span>
+              <input type="number" id="harga" class="form-control" placeholder="cth: 750000000" oninput="preview()">
+            </div>
+            <small id="preHarga" style="color:#5a8fbf; font-size:.75rem;"></small>
+          </div>
+
+          <div class="mb-3">
+            <label>Down Payment (%)</label>
+            <div class="input-group mt-1">
+              <input type="number" id="dp" class="form-control" placeholder="cth: 20" min="0" max="99" oninput="preview()">
+              <span class="input-group-text">%</span>
+            </div>
+            <small id="preDP" style="color:#5a8fbf; font-size:.75rem;"></small>
+          </div>
+
+          <div class="mb-4">
+            <label>Tenor (Tahun)</label>
+            <div class="input-group mt-1">
+              <input type="number" id="tenor" class="form-control" placeholder="cth: 3" min="1" max="10" oninput="preview()">
+              <span class="input-group-text">Tahun</span>
+            </div>
+            <small id="preTenor" style="color:#5a8fbf; font-size:.75rem;"></small>
+          </div>
+
+          <div class="row g-2">
+            <div class="col-8">
+              <button class="btn-hitung" onclick="hitung()">
+                <i class="bi bi-calculator me-2"></i>Hitung Angsuran
+              </button>
+            </div>
+            <div class="col-4">
+              <button class="btn-reset" onclick="reset()">
+                <i class="bi bi-arrow-counterclockwise"></i> Reset
+              </button>
+            </div>
+          </div>
+
+          <!-- Error -->
+          <div class="error-msg" id="errMsg">
+            <i class="bi bi-exclamation-triangle me-2"></i><span id="errTxt"></span>
+          </div>
+
+          <!-- Hasil -->
+          <div class="hasil-box" id="hasilBox">
+            <h6 style="color:#7db8f0; font-size:.72rem; letter-spacing:2px; text-transform:uppercase;">
+              <i class="bi bi-receipt me-2"></i>Hasil Perhitungan
+            </h6>
+            <div class="hasil-row"><span class="lbl">Harga Mobil</span><span class="val" id="outHarga"></span></div>
+            <div class="hasil-row"><span class="lbl">Bunga (20% flat)</span><span class="val" id="outBunga"></span></div>
+            <div class="hasil-row"><span class="lbl" id="outDPLbl">DP</span><span class="val" id="outDP"></span></div>
+            <div class="hasil-row"><span class="lbl">Pokok Kredit</span><span class="val" id="outPokok"></span></div>
+            <div class="hasil-row"><span class="lbl">Tenor</span><span class="val" id="outTenor"></span></div>
+            <div class="angsuran-box">
+              <div class="kecil">ANGSURAN PER BULAN</div>
+              <div class="besar" id="outAngsuran"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Info Kredit -->
+      <div class="col-12 col-lg-5">
+        <div class="kredit-card h-100">
+          <h6 class="text-white mb-4"><i class="bi bi-info-circle me-2 text-primary"></i>Ketentuan Kredit</h6>
+
+          <div class="p-3 mb-3 rounded" style="background:rgba(28,105,212,.12); border-left:3px solid #1c69d4;">
+            <small style="color:#7db8f0; font-size:.7rem; letter-spacing:1px;">SUKU BUNGA</small>
+            <div class="text-white fw-bold fs-4">20% <small class="text-secondary fs-6 fw-normal">flat dari harga kendaraan</small></div>
+          </div>
+
+          <div class="p-3 mb-3 rounded" style="background:rgba(255,255,255,.04);">
+            <small class="text-secondary fw-bold">📋 Rumus Perhitungan</small><br>
+            <code style="color:#7db8f0; font-size:.78rem; line-height:2.2;">
+              Bunga = 20% × Harga Mobil<br>
+              DP Nominal = (DP% ÷ 100) × Harga<br>
+              Bulan = Tenor × 12<br>
+              <span style="color:#4ade80; font-weight:700;">Angsuran = (Harga + Bunga − DP) ÷ Bulan</span>
+            </code>
+          </div>
+
+          <div class="p-3 rounded" style="background:rgba(255,255,255,.04);">
+            <small class="text-secondary fw-bold">✅ Syarat & Ketentuan</small>
+            <ul style="color:#b0c4de; font-size:.82rem; line-height:2; padding-left:1.2rem; margin:.5rem 0 0;">
+              <li>DP minimal 10% dari harga mobil</li>
+              <li>Tenor 1 – 10 tahun</li>
+              <li>Bunga <strong style="color:#fbbf24;">flat</strong> (tidak berubah)</li>
+              <li>Simulasi bersifat estimasi</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== TENTANG PERUSAHAAN ===== -->
+<section id="tentang" class="tentang-section">
+  <div class="container">
+    <div class="sec-title">
+      <h2>Tentang Perusahaan</h2>
+      <div class="line"></div>
+    </div>
+
+    <div class="row g-5 align-items-center">
+      <div class="col-12 col-lg-5">
+        <img src="https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=800" alt="BMW Showroom" class="img-fluid">
+      </div>
+      <div class="col-12 col-lg-7">
+        <h4 class="fw-bold" style="color:#0d1b2a;">Bayerische Motoren Werke AG</h4>
+        <p class="text-secondary" style="font-size:.9rem; line-height:1.8;">
+          BMW adalah produsen kendaraan mewah asal Jerman yang berdiri sejak <strong>7 Maret 1916</strong> di München, Bavaria.
+          Selama lebih dari satu abad, BMW menjadi simbol keunggulan rekayasa otomotif.
+        </p>
+        <p class="text-secondary" style="font-size:.9rem; line-height:1.8;">
+          Di Indonesia, BMW hadir melalui <strong>PT BMW Indonesia</strong> sejak 1976, menawarkan sedan, SUV,
+          hingga kendaraan listrik (BMW i Series) dengan jaringan dealer di seluruh Indonesia.
+        </p>
+
+        <div class="stats">
+          <div class="stat-box"><div class="num">100+</div><div class="lbl">Tahun Berdiri</div></div>
+          <div class="stat-box"><div class="num">140+</div><div class="lbl">Negara Distribusi</div></div>
+          <div class="stat-box"><div class="num">30+</div><div class="lbl">Dealer di Indonesia</div></div>
+          <div class="stat-box"><div class="num">#1</div><div class="lbl">Luxury Brand Indonesia</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== KONTAK ===== -->
+<section id="kontak" class="kontak-section">
+  <div class="container">
+    <div class="sec-title">
+      <h2>Kontak Perusahaan</h2>
+      <div class="line"></div>
+      <p style="color:#8fa9c8; font-size:.88rem; margin-top:.5rem;">Hubungi kami untuk informasi lebih lanjut</p>
+    </div>
+
+    <div class="row g-4 justify-content-center">
+      <!-- Alamat -->
+      <div class="col-12 col-md-5">
+        <div class="kontak-card">
+          <div class="kontak-icon"><i class="bi bi-geo-alt-fill"></i></div>
+          <h5>Alamat</h5>
+          <p>Jl. Magnolia VI No.6, Jelupang,<br>Kec. Serpong Utara, Kota Tangerang Selatan,<br>Banten 15323</p>
+        </div>
+      </div>
+      <!-- Telepon -->
+      <div class="col-12 col-md-5">
+        <div class="kontak-card">
+          <div class="kontak-icon"><i class="bi bi-telephone-fill"></i></div>
+          <h5>Telepon</h5>
+          <p>
+            <a href="tel:087893992809" style="color:#7db8f0; text-decoration:none; font-size:1.1rem; font-weight:700;">
+              0878-9399-2809
+            </a><br>
+            <small>Senin – Sabtu, 09.00 – 18.00</small>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Peta -->
+    <div class="mt-4 rounded overflow-hidden" style="height:280px; box-shadow:0 8px 30px rgba(0,0,0,.4);">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.7!2d106.6534!3d-6.2462!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zSmwuIE1hZ25vbGlhIFZJIE5vLjY!5e0!3m2!1sid!2sid!4v1"
+        width="100%" height="100%" style="border:0;" allowfullscreen loading="lazy">
+      </iframe>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="mb-1">
+    <span class="fw-bold" style="font-size:1rem; letter-spacing:3px;">BMW</span>
+    <span class="mx-2 text-secondary">|</span>
+    <span>PT BMW Indonesia</span>
+  </div>
+  <div class="mb-2" style="color:#9ca3af; font-size:.8rem;">
+    © 2025 BMW Indonesia. All Rights Reserved.
+  </div>
+  <div style="color:#4b5563; font-size:.78rem;">
+    Dibuat oleh <strong style="color:#7db8f0;">Kelompok 10</strong> &nbsp;|&nbsp;
+    Aulia Ahzahra &nbsp;·&nbsp; Mutia Sabila Hasan &nbsp;·&nbsp; Siti Affiyah Salimah
+  </div>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  /* ─── Format Rupiah ─── */
+  function rp(n) {
+    return 'Rp ' + Math.round(n).toLocaleString('id-ID');
+  }
+
+  /* ─── Preview Input ─── */
+  function preview() {
+    const h = parseFloat(document.getElementById('harga').value) || 0;
+    const d = parseFloat(document.getElementById('dp').value)    || 0;
+    const t = parseFloat(document.getElementById('tenor').value) || 0;
+
+    document.getElementById('preHarga').textContent  = h ? '= ' + rp(h) : '';
+    document.getElementById('preDP').textContent     = (h && d) ? '= ' + rp(h * d / 100) : '';
+    document.getElementById('preTenor').textContent  = t ? '= ' + (t * 12) + ' bulan' : '';
+  }
+
+  /* ─── Isi Harga dari Kartu ─── */
+  function isiHarga(harga) {
+    document.getElementById('harga').value = harga;
+    preview();
+    document.getElementById('kredit').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  /* ─── Hitung Kredit ─── */
+  function hitung() {
+    const h = parseFloat(document.getElementById('harga').value);
+    const d = parseFloat(document.getElementById('dp').value);
+    const t = parseFloat(document.getElementById('tenor').value);
+
+    const box = document.getElementById('hasilBox');
+    const err = document.getElementById('errMsg');
+    box.classList.remove('show');
+    err.classList.remove('show');
+
+    // Validasi
+    if (!h || h <= 0)          return tampilError('Harga mobil harus diisi.');
+    if (!d || d < 0 || d >= 100) return tampilError('DP harus antara 0% – 99%.');
+    if (!t || t < 1 || t > 10)  return tampilError('Tenor harus antara 1 – 10 tahun.');
+
+    // Rumus
+    const bunga    = 0.20 * h;
+    const nomDP    = (d / 100) * h;
+    const bulan    = t * 12;
+    const pokok    = (h + bunga) - nomDP;
+    const angsuran = pokok / bulan;
+
+    // Tampilkan hasil
+    document.getElementById('outHarga').textContent   = rp(h);
+    document.getElementById('outBunga').textContent   = rp(bunga);
+    document.getElementById('outDPLbl').textContent   = 'DP (' + d + '%)';
+    document.getElementById('outDP').textContent      = rp(nomDP);
+    document.getElementById('outPokok').textContent   = rp(pokok);
+    document.getElementById('outTenor').textContent   = t + ' Tahun (' + bulan + ' Bulan)';
+    document.getElementById('outAngsuran').textContent = rp(angsuran);
+
+    box.classList.add('show');
+    box.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  /* ─── Tampil Error ─── */
+  function tampilError(pesan) {
+    document.getElementById('errTxt').textContent = pesan;
+    document.getElementById('errMsg').classList.add('show');
+  }
+
+  /* ─── Reset Form ─── */
+  function reset() {
+    ['harga','dp','tenor'].forEach(id => document.getElementById(id).value = '');
+    ['preHarga','preDP','preTenor','errTxt'].forEach(id => document.getElementById(id).textContent = '');
+    document.getElementById('hasilBox').classList.remove('show');
+    document.getElementById('errMsg').classList.remove('show');
+  }
+
+  /* ─── Enter = Hitung ─── */
+  ['harga','dp','tenor'].forEach(id => {
+    document.getElementById(id).addEventListener('keydown', e => {
+      if (e.key === 'Enter') hitung();
+    });
+  });
+</script>
+</body>
+</html>
